@@ -8,7 +8,7 @@ SWFU={
  * with your own UI.
  *  
  */
-SWFU.UploadView=SC.View.design({
+SWFU.UploadView=SC.View.design(SC.DelegateSupport,{
 	
 	// private reference to the uploader object
 	_swfu:null,
@@ -17,6 +17,11 @@ SWFU.UploadView=SC.View.design({
 	 * The url to upload the file to
 	 */
 	uploadUrl: null,
+	
+	/**
+	 * Mandatory child view, there must be, at least, a button view to trigger the process
+	 */
+	childViews: "buttonView".w(),
 	
 	/**
 	 * The button that will trigger the upload
@@ -28,7 +33,7 @@ SWFU.UploadView=SC.View.design({
 	didAppendToDocument: function(){
 		this._swfu = new SWFUpload({
 			upload_url : this.get("uploadUrl"),
-			flash_url : sc_static("swfupload.swf"),
+			flash_url : sc_static('swfupload.swf'),
 			button_placeholder_id : this.getPath("buttonView.layer.id")
 		});
 	},
