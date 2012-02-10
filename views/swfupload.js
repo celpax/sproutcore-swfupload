@@ -17,6 +17,18 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	// private reference to the uploader object
 	_swfu:null,
 	_swfuploadLoaded: NO,
+	
+	/**
+	 * If your session is authenticated, you might experience Flash not allways sending
+	 * the session cookie. Specify this parameter and ";cookie=value" will be added to the
+	 * URL.
+	 */
+	sessionCookieName: null,
+	
+	/**
+	 * The file post name. 
+	 */
+	filePostName: "Filedata",
 		
 	/**
 	 * Mandatory child view, there must be, at least, a button view to trigger the process
@@ -42,16 +54,21 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 		
 		this._swfu = new SWFUpload({
 			debug: true,
-			upload_url: obj.invokeDelegateMethod(del,"uploadUrl",obj),
+			upload_url: this.workoutUploadUrl(del),
+			file_post_name: this.get("filePostName"),
 			button_action:SWFUpload.BUTTON_ACTION.SELECT_FILE,
 			button_cursor:SWFUpload.CURSOR.HAND,
 			button_window_mode:SWFUpload.WINDOW_MODE.TRANSPARENT,
-			
+			button_image_url: SC.BLANK_IMAGE_URL,
+			button_text: "upload",
+			button_width: 100,
+			button_height: 100,
+			use_query_string: true,
 			flash_url : sc_static('swfupload.swf'),
 			button_placeholder_id : this.getPath("buttonView.layer.id"),
 			swfupload_loaded_handler: function(){obj.swfuploadLoaded()},
 			file_dialog_start_handler: function(){obj.invokeDelegateMethod(del,"fileDialogStart",obj)},
-			file_queued_handler: function(file){obj.invokeDelegateMethod(del,"fileQueued",obj,file)},
+			file_queued_handler: function(file){obj.invokeDelegateMethod(del,"fileQueued",obj,file);obj._swfu.startUpload();},
 			file_queue_error_handler: function(file,error,message){obj.invokeDelegateMethod(del,"fileQueueError",obj,file,error,message)},
 			file_dialog_complete_handler: function(nFileSelected, nFilesQueued, totalFilesQueued){obj.invokeDelegateMethod(del,"fileDialogComplete",obj,nFileSelected, nFilesQueued, totalFilesQueued)},
 			upload_start_handler: function(file){return obj.invokeDelegateMethod(del,"uploadStart",obj,file);},
@@ -61,6 +78,17 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			upload_complete_handler: function(file){obj.invokeDelegateMethod(del,"uploadComplete",obj,file)},
 			debug_handler: function(message){obj.debug(message)}
 		});
+	},
+	
+	/**
+	 * Gets the upload URL, add the session ID if required.
+	 */
+	workoutUploadUrl:function(del){
+		var url=this.invokeDelegateMethod(del,"uploadUrl",this), cookie=this.get("sessionCookieName");
+		if(cookie){
+			url=url+";"+cookie+"="+SC.Cookie.find(cookie).get('value');
+		}
+		return url;
 	},
 	
 	/**

@@ -35,7 +35,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} swfuploadView
 	 */	
 	fileDialogStart: function(swfuploadView){
-		SC.Logger.debug("fileDialogStart");
 	},
 	
 	/**
@@ -45,7 +44,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} file
 	 */
 	fileQueued: function(swfuploadView, file){
-		SC.Logger.debug("fileQueued");
 	},
 	
 	/**
@@ -59,7 +57,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} message
 	 */
 	fileQueueError: function(swfuploadView, file, error, message){
-		SC.Logger.debug("fileQueueError");
 	},
 	
 	/**
@@ -72,7 +69,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} totalFilesQueued
 	 */
 	fileDialogComplete: function(swfuploadView,nFileSelected, nFilesQueued, totalFilesQueued){
-		SC.Logger.debug("fileDialogComplete");
 	},
 	
 	/**
@@ -86,7 +82,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} file
 	 */
 	uploadStart: function(swfuploadView, file){
-		SC.Logger.debug("uploadStart");		
 	},
 	
 	
@@ -101,7 +96,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} totalBytes
 	 */
 	uploadProgress: function(swfuploadView,file,completedBytes,totalBytes){
-		SC.Logger.debug("uploadProgress");		
 	},
 	
 	
@@ -116,7 +110,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} message
 	 */
 	uploadError: function(swfuploadView,file,errorCode,message){
-		SC.Logger.debug("uploadError");		
 	},
 	
 	/**
@@ -131,7 +124,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} response
 	 */
 	uploadSuccess: function(swfuploadView,file,serverData,response){
-		SC.Logger.debug("uploadSuccess");		
 	},
 	
 	/**
@@ -143,7 +135,6 @@ SWFU.UploadDelegate={
 	 * @param {Object} file
 	 */
 	uploadComplete: function(swfuploadView,file){
-		SC.Logger.debug("uploadComplete");		
 	}
 		
 };
