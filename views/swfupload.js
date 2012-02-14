@@ -54,6 +54,14 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
       	this.invokeLast(this.setupSWFUpload); 
 	},
 	
+	updateLayer: function(){
+		sc_super();
+	},
+	
+	didAppendToDocument: function(){
+      	this.invokeLast(this.setupSWFUpload); 
+	},
+	
 	/**
 	 * Creates the SWFUpload.
 	 */
