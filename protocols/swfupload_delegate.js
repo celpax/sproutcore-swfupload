@@ -29,6 +29,14 @@ SWFU.UploadDelegate={
 	},
 		
 	/**
+	 * The swfUploadLoaded event is fired by flashReady. It is settable. 
+	 * swfUploadLoaded is called to let you know that it is safe to call SWFUpload methods.
+	 */	
+	swfuploadLoaded: function(swfuploadView){
+		
+	},	
+		
+	/**
 	 * fileDialogStart is fired after selectFile for selectFiles is called. 
 	 * This event is fired immediately before the File Selection Dialog window is displayed. 
 	 * However, the event may not execute until after the Dialog window is closed.
