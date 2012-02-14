@@ -81,10 +81,10 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			button_action:SWFUpload.BUTTON_ACTION.SELECT_FILE,
 			button_cursor:SWFUpload.CURSOR.HAND,
 			button_window_mode:SWFUpload.WINDOW_MODE.TRANSPARENT,
-			button_image_url: SC.BLANK_IMAGE_URL, //TODO: fix
+			button_image_url: "http://demo.swfupload.org/v220/simpledemo/images/TestImageNoText_65x29.png", //TODO: fix
 			button_text: "upload",
-			button_width: 100,
-			button_height: 100,
+			button_width: 65,
+			button_height: 29,
 			flash_url : sc_static('swfupload.swf'),
 			button_placeholder_id : this.getPath("buttonView.layer.id"),
 			swfupload_loaded_handler: function(){obj.swfuploadLoaded(del)},
