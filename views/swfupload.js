@@ -4,26 +4,33 @@ SWFU={
 };
 
 /**
- * This is the UploadButton View. You can include it with onther UI elements in your windows.
- * The delegate can point to a controller and other UI elements, such as a progress bar can read
- * their values from that controller.
+ * This is the UploadButton View. Wich includes the Button UI (an SC.View) and a placeholder for the flash.
+ * The overlay method is used to place it. All views have the same dimensions, the flash is transparent and
+ * its over the button.
  * 
  * So far, uploading one file only "use case" is supported. Should be easy to extend to support uploading multiple files.
  *  
  */
 SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	
+	classNames: "sc-swfupload".w(),
+	
 	// The delegate object for this view. 
 	_delegate:null,
 	
 	// private reference to the uploader object
 	_swfu:null,
-	_swfuploadLoaded: NO,
-	
+		
 	/**
 	 * Will load the SWFupload debug messages.
 	 */
-	debug: YES,
+	debug: NO,
+	
+	/**
+	 * The title to put on the button
+	 */
+	title: "upload",
+	
 	
 	/**
 	 * If your session is authenticated, you might experience Flash not allways sending
@@ -40,12 +47,25 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	/**
 	 * Mandatory child view, there must be, at least, a button view to trigger the process
 	 */
-	childViews: "buttonView".w(),
+	childViews: "buttonView swuploadView".w(),
 	
 	/**
-	 * The Placeholder for the button.
+	 * The Button UI, must have the same dimensions as this VIEW.
+	 * 
 	 */
-	buttonView: SC.View,
+	
+	buttonView: SC.ButtonView.design({
+		title:"upload"
+	}),
+
+	/**
+	 * The Flash Placeholder, must have the same dimensions as this view.
+	 * Will be positioned on top of the butto. by using the overlay method
+	 * descrived in the SWUpload documentation. CSS zindex must be used to ensure
+	 * this view is over the button. 
+	 */
+	swuploadView: SC.View,
+	
 	
 	// FLash 10 restrictions. See SWUpload docs
 	didCreateLayer: function(){
@@ -68,9 +88,9 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 		
 		// some workarrounds related to shoing the flash ONLY when it is visible
 		if(this._swfu) return; 
-		if(!document.getElementById(this.getPath("buttonView.layer.id"))) return;
+		if(!document.getElementById(this.getPath("swuploadView.layer.id"))) return;
 
-		SC.Logger.debug("Creating SWFUpload Component");
+		if(this.get("debug")) SC.Logger.debug("Creating SWFUpload Component");
 		
 		this._swfu = new SWFUpload({
 			debug: this.get("debug"),
@@ -78,13 +98,14 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			file_post_name: this.get("filePostName"),
 			button_action:SWFUpload.BUTTON_ACTION.SELECT_FILE,
 			button_cursor:SWFUpload.CURSOR.HAND,
-			button_window_mode:SWFUpload.WINDOW_MODE.TRANSPARENT,
-			button_image_url: "http://demo.swfupload.org/v220/simpledemo/images/TestImageNoText_65x29.png", //TODO: fix
-			button_text: "upload",
-			button_width: 65,
-			button_height: 29,
+			button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+			//button_image_url: sc_static('swfupload-sprite.png'),
+			//button_text: "<span class='swft'>"+this.get("title")+"</span>",
+			//button_text_style: ".swft{font-size:16; color: white;}", //uff!! this is really bad!
+			button_width: this.getPath('frame.width'),
+			button_height: this.getPath('frame.height'),
 			flash_url : sc_static('swfupload.swf'),
-			button_placeholder_id : this.getPath('buttonView.layerId'),
+			button_placeholder_id : this.getPath('swuploadView.layerId'),
 			swfupload_loaded_handler: function(){obj.swfuploadLoaded(del)},
 			file_dialog_start_handler: function(){obj.invokeDelegateMethod(del,"fileDialogStart",obj)},
 			file_queued_handler: function(file){obj.invokeDelegateMethod(del,"fileQueued",obj,file);obj._swfu.startUpload();},
@@ -112,7 +133,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	},
 	
 	destroySWFUpload: function(){
-		SC.Logger.debug("Destroying SWFUpload Component");
+		if(this.get("debug")) SC.Logger.debug("Destroying SWFUpload Component");
 		if(this._swfu) this._swfu.destroy();
 		this._swfu=null;
 	},

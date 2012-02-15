@@ -1,0 +1,9 @@
+.swfupload {
+	cursor: pointer;
+}
+
+.swfupload {
+	cursor: pointer;
+	position: absolute;
+	z-index: 1;
+}
