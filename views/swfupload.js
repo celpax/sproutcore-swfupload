@@ -4,9 +4,9 @@ SWFU={
 };
 
 /**
- * This is the base view used for upload, it is meant to be extended 
- * with your own UI. This implementation supports only a sigle file
- * upload. 
+ * This is the UploadButton View. You can include it with onther UI elements in your windows.
+ * The delegate can point to a controller and other UI elements, such as a progress bar can read
+ * their values from that controller.
  * 
  * So far, uploading one file only "use case" is supported. Should be easy to extend to support uploading multiple files.
  *  
@@ -43,11 +43,9 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	childViews: "buttonView".w(),
 	
 	/**
-	 * The button that will trigger the upload
+	 * The Placeholder for the button.
 	 */
-	buttonView: SC.ButtonView.design({
-		title: "Upload"
-	}),
+	buttonView: SC.View,
 	
 	// FLash 10 restrictions. See SWUpload docs
 	didCreateLayer: function(){
@@ -86,7 +84,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			button_width: 65,
 			button_height: 29,
 			flash_url : sc_static('swfupload.swf'),
-			button_placeholder_id : this.getPath("buttonView.layer.id"),
+			button_placeholder_id : this.getPath('buttonView.layerId'),
 			swfupload_loaded_handler: function(){obj.swfuploadLoaded(del)},
 			file_dialog_start_handler: function(){obj.invokeDelegateMethod(del,"fileDialogStart",obj)},
 			file_queued_handler: function(file){obj.invokeDelegateMethod(del,"fileQueued",obj,file);obj._swfu.startUpload();},
@@ -99,6 +97,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			upload_complete_handler: function(file){obj.invokeDelegateMethod(del,"uploadComplete",obj,file)},
 			debug_handler: function(message){obj.debug(message)}
 		});
+		
 	},
 	
 	/**
@@ -123,10 +122,15 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	 * swfUploadLoaded is called to let you know that it is safe to call SWFUpload methods.
 	 */
 	swfuploadLoaded: function(del){
-		if(this._uploadUrl) this._swfu.setUploadURL(this._uploadUrl);
-		this.invokeDelegateMethod(del,"swfuploadLoaded",this);
-				this.beginPropertyChanges();
 
+		// IE9 patch, 
+		// CoreQuery will fail to dispatch events, will try to get SC attributes on DOM Elements
+		// Created by SWFUpload
+		// we make it return its ID for whatever SC attribute it is aked...
+		this._swfu.movieElement.getAttribute=function(){return this.id;};
+		
+		// get the upload URL from delegate		
+		this.invokeDelegateMethod(del,"swfuploadLoaded",this);
 	},
 	
 	willDestroyLayer: function(){
