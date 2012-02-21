@@ -1,6 +1,6 @@
 // Set up the Name Space
 SWFU={
-	swfUploadVersion:"2.2.0.1"
+	swfUploadVersion:SWFUpload.version
 };
 
 /**
@@ -51,11 +51,15 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	
 	/**
 	 * The Button UI, must have the same dimensions as this VIEW.
+	 * The button will be (visually) enabled only after the flash has been loaded.
+	 * In some cases (CDN distribution) flash download takes some additional time creating
+	 * a significant usability issue.
 	 * 
 	 */
 	
 	buttonView: SC.ButtonView.design({
-		title:"upload"
+		title:"upload",
+		isEnabled: NO
 	}),
 
 	/**
@@ -152,6 +156,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 		
 		// get the upload URL from delegate		
 		this.invokeDelegateMethod(del,"swfuploadLoaded",this);
+		this.setPath("buttonView.isEnabled",YES);
 	},
 	
 	willDestroyLayer: function(){
