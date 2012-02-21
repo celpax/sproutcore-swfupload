@@ -103,12 +103,10 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			button_action:SWFUpload.BUTTON_ACTION.SELECT_FILE,
 			button_cursor:SWFUpload.CURSOR.HAND,
 			button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
-			//button_image_url: sc_static('swfupload-sprite.png'),
-			//button_text: "<span class='swft'>"+this.get("title")+"</span>",
-			//button_text_style: ".swft{font-size:16; color: white;}", //uff!! this is really bad!
 			button_width: this.getPath('frame.width'),
 			button_height: this.getPath('frame.height'),
 			flash_url : sc_static('swfupload.swf'),
+			prevent_swf_caching : false,
 			button_placeholder_id : this.getPath('swuploadView.layerId'),
 			swfupload_loaded_handler: function(){obj.swfuploadLoaded(del)},
 			file_dialog_start_handler: function(){obj.invokeDelegateMethod(del,"fileDialogStart",obj)},
