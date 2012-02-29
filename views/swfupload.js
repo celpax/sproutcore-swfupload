@@ -108,6 +108,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
 			button_width: this.getPath('frame.width'),
 			button_height: this.getPath('frame.height'),
+            button_image_url: sc_static('transparent.png'),
 			flash_url : sc_static('swfupload.swf'),
 			prevent_swf_caching : false,
 			button_placeholder_id : this.getPath('swuploadView.layerId'),
