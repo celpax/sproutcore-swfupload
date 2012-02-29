@@ -1,7 +1,10 @@
+
 // Set up the Name Space
 SWFU={
 	swfUploadVersion:SWFUpload.version
 };
+
+
 
 /**
  * This is the UploadButton View. Wich includes the Button UI (an SC.View) and a placeholder for the flash.
@@ -70,7 +73,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	 */
 	swuploadView: SC.View,
 	
-	
+
 	// FLash 10 restrictions. See SWUpload docs
 	didCreateLayer: function(){
       	this.invokeLast(this.setupSWFUpload); 
@@ -118,7 +121,7 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 			upload_error_handler: function(file,errorCode,message){obj.invokeDelegateMethod(del,"uploadError",obj,file,errorCode,message)},
 			upload_success_handler: function(file,serverData,response){obj.invokeDelegateMethod(del,"uploadSuccess",obj,file,serverData,response)},
 			upload_complete_handler: function(file){obj.invokeDelegateMethod(del,"uploadComplete",obj,file)},
-			debug_handler: function(message){obj.debug(message)}
+			debug_handler: function(message){obj.logDebug(message)}
 		});
 		
 	},
@@ -171,9 +174,13 @@ SWFU.UploadView=SC.View.extend(SC.DelegateSupport,{
 	/**
 	 * Logs debug information
 	 */
-	debug: function(message){
+	logDebug: function(message){
 		SC.Logger.debug(message);
 	}
 	
 	
 });
+
+
+
+
